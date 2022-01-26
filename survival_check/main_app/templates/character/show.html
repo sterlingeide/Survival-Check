@@ -1,0 +1,26 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block content %}
+    <h2>Name: {{character.name}}</h2>
+    <p>Class: {{character.character_class}}</p>
+    <p>Race: {{character.race}}</p>
+    <p>HP: {{character.hit_points}}</p>
+    <p>Spell Attack Bonus: {{character.spell_attack_bonus}}</p>
+    <p>Spell Save DC: {{character.spell_save_dc}}</p>
+    <p>Strength Saving Throw:{{character.strength_saving_throw}}</p> 
+    <p>Dexterity Saving Throw:{{character.dexterity_saving_throw}} </p>
+    <p>Constitution Saving Throw:{{character.constitution_saving_throw}} </p>
+    <p>Intelligence Saving Throw:{{character.intelligence_saving_throw}}</p>
+    <p>Wisdom Saving Throw:{{character.wisdom_saving_throw}}</p>
+    <p>Charisma Saving Throw:{{character.charisma_saving_throw}}</p>
+
+    <a href="{% url 'character_update' character.id %}">Update Details</a>
+    <a href="{% url 'character_delete' character.id %}">DELETE This Character</a>
+
+    <hr>
+
+<div class="row">
+
+</div>
+
+{% endblock %}

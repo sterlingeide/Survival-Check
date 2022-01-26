@@ -1,0 +1,15 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block content %}
+    <hr />
+    {% for character in characters %}
+
+        <a href="/character/{{character.id}}">
+            <p>Name: {{ character.name }}</p>
+        </a>
+        <a href="/user/{{character.user.username}}">
+            <p>Created By: {{character.user.username}}</p>
+        </a>
+        <hr />
+    {% endfor %}
+{% endblock %}
