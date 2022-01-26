@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the main index.")
+    return render(request, 'main_app/home.html')
 
 def login_view(request):
     if request.method == 'POST':
@@ -71,6 +71,7 @@ class character_creation(CreateView):
         self.object.save()
         return HttpResponseRedirect('/characters')
 
+@method_decorator(login_required, name='dispatch')
 class character_update(UpdateView):
     model = Character
     fields = ['name', 'character_class', 'race', 'hit_points', 'spell_attack_bonus', 'spell_save_dc', 'strength_saving_throw', 'dexterity_saving_throw', 'constitution_saving_throw', 'intelligence_saving_throw', 'wisdom_saving_throw', 'charisma_saving_throw']
@@ -80,6 +81,7 @@ class character_update(UpdateView):
         self.object.save()
         return HttpResponseRedirect('/character/'+str(self.object.pk))
 
+@method_decorator(login_required, name='dispatch')
 class character_delete(DeleteView):
     model = Character
     success_url = '/characters'
@@ -110,6 +112,7 @@ class weapon_creation(CreateView):
         self.object.save()
         return HttpResponseRedirect('/weapons')
 
+@method_decorator(login_required, name='dispatch')
 class weapon_update(UpdateView):
     model = Weapons
     fields = ['name', 'to_hit_bonus', 'damage_bonus']
@@ -119,6 +122,7 @@ class weapon_update(UpdateView):
         self.object.save()
         return HttpResponseRedirect('/weapon/'+str(self.object.pk))
 
+@method_decorator(login_required, name='dispatch')
 class weapon_delete(DeleteView):
     model = Weapons
     success_url = '/weapons'

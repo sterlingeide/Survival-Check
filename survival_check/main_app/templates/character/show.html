@@ -19,7 +19,9 @@
             <p>{{ weapon.name }}</p>
         </a>        
     {% endfor %} 
-
+    <a href="/weapon/create">
+        <p>Add Weapon</p>
+    </a>  
 
     <a href="{% url 'character_update' character.id %}">Update Details</a>
     <a href="{% url 'character_delete' character.id %}">DELETE This Character</a>
