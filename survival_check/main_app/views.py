@@ -54,9 +54,7 @@ def signup_view(request):
 @login_required
 def profile(request, username):
     user = User.objects.get(username=username)
-    print(user)
     characters = (Character.objects.filter(user=user))
-    print(characters)
     return render(request, 'main_app/profile.html', {'username': username, 'characters': characters})
 
 
@@ -95,5 +93,43 @@ def character_index(request):
 
 def character_show(request, character_id):
     character = Character.objects.get(id=character_id)
+    weapons = Weapons.objects.filter(character = character)
+    return render(request, 'character/show.html', {'character': character, 'weapons': weapons})
+
+
+@method_decorator(login_required, name='dispatch')
+class weapon_creation(CreateView):
+    model = Weapons
+    fields = '__all__'
+    success_url = '/weapons/'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        print('!!!!! SELF.OBJECT:', self.object)
+        self.object.user = self.request.user
+        self.object.save()
+        return HttpResponseRedirect('/weapons')
+
+class weapon_update(UpdateView):
+    model = Weapons
+    fields = ['name', 'to_hit_bonus', 'damage_bonus']
+
+    def form_valid(self, form): # this will allow us to catch the pk to redirect to the show page
+        self.object = form.save(commit=False) # don't post to the db until we say so
+        self.object.save()
+        return HttpResponseRedirect('/weapon/'+str(self.object.pk))
+
+class weapon_delete(DeleteView):
+    model = Weapons
+    success_url = '/weapons'
+
+def weapon_index(request):
+    # Get all cats from the db
+    weapons = Weapons.objects.all()
+    return render(request, 'weapon/index.html', {'weapons': weapons})
+
+
+def weapon_show(request, weapon_id):
+    weapon = Weapons.objects.get(id=weapon_id)
     # weapons = Weapons.objects.all()
-    return render(request, 'character/show.html', {'character': character})
+    return render(request, 'weapon/show.html', {'weapon': weapon})

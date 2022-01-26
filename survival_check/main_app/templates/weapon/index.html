@@ -1,0 +1,15 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block content %}
+    <hr />
+    {% for weapon in weapons %}
+        <a href="/weapon/{{weapon.id}}">
+            
+            <p>Name: {{ weapon.name }}</p>
+        </a>
+        <a href="/character/{{weapon.character.id}}">
+            <p>Created For: {{weapon.character.name}}</p>
+        </a>
+        <hr />
+    {% endfor %}
+{% endblock %}

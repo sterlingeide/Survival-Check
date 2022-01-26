@@ -1,0 +1,17 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block content %}
+    <h2>Name: {{weapon.name}}</h2>
+    <p>To Hit Bonus: {{weapon.to_hit_bonus}}</p>
+    <p>Damage Bonus: {{weapon.damage_bonus}}</p>
+
+    <a href="{% url 'weapon_update' weapon.id %}">Update Details</a>
+    <a href="{% url 'weapon_delete' weapon.id %}">DELETE This Weapon</a>
+
+    <hr>
+
+<div class="row">
+
+</div>
+
+{% endblock %}

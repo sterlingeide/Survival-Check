@@ -13,6 +13,13 @@
     <p>Intelligence Saving Throw:{{character.intelligence_saving_throw}}</p>
     <p>Wisdom Saving Throw:{{character.wisdom_saving_throw}}</p>
     <p>Charisma Saving Throw:{{character.charisma_saving_throw}}</p>
+    <h3>Weapons:</h3>
+    {% for weapon in weapons %}
+        <a href="/weapon/{{weapon.id}}">
+            <p>{{ weapon.name }}</p>
+        </a>        
+    {% endfor %} 
+
 
     <a href="{% url 'character_update' character.id %}">Update Details</a>
     <a href="{% url 'character_delete' character.id %}">DELETE This Character</a>
