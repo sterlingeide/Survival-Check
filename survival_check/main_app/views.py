@@ -7,6 +7,8 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 def index(request):
@@ -137,3 +139,19 @@ def weapon_show(request, weapon_id):
     weapon = Weapons.objects.get(id=weapon_id)
     # weapons = Weapons.objects.all()
     return render(request, 'weapon/show.html', {'weapon': weapon})
+
+
+def room_search(request):
+    return render(request, 'main_app/room_search.html')
+
+def room_show(request, room_name):
+    return render(request, 'room/show.html', {'room_name': room_name})
+
+def alarm(req):
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)('chat_lobbyh', {
+        'type': 'send_from_view',
+        'content': 'triggered'
+    })
+
+    return HttpResponse('<p>Done</p>') 

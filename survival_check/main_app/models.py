@@ -23,9 +23,11 @@ class Character(models.Model):
 
 class Weapons(models.Model):
     name = models.CharField(max_length=100)
-    to_hit_bonus = models.CharField(max_length=50)
-    damage_bonus = models.CharField(max_length=50)
+    to_hit_bonus = models.IntegerField()
+    damage_dice = models.IntegerField()
+    damage_bonus = models.IntegerField()
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
+
