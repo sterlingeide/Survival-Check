@@ -1,6 +1,6 @@
-# chat/consumers.py
 import json 
 from channels.generic.websocket import AsyncWebsocketConsumer
+import random
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):

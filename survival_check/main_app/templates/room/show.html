@@ -12,12 +12,21 @@
         {{ room_name|json_script:"room-name" }}
     </h1>   
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+    <input id="roll-4" type="button" value="d4" >
+    <input id="roll-6" type="button" value="d6" >
+    <input id="roll-8" type="button" value="d8" >
+    <input id="roll-10" type="button" value="d10" >
+    <input id="roll-12" type="button" value="d12" >
+    <input id="roll-20" type="button" value="d20" >
+    <input id="roll-100" type="button" value="d100" >
+    <br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
     <script>
-const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
-const chatSocket =new WebSocket(
+        const chatSocket =new WebSocket(
             'ws://'
             + window.location.host
             + '/ws/room/'
@@ -25,28 +34,79 @@ const chatSocket =new WebSocket(
             + '/'
         );
 
-chatSocket.onmessage =function(e) {
-const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
-        };
+        chatSocket.onmessage =function(e) {
+            const data = JSON.parse(e.data);
+                document.querySelector('#chat-log').value += (data.message + '\n');
+            };
 
-chatSocket.onclose =function(e) {
+        chatSocket.onclose =function(e) {
             console.error('Chat socket closed unexpectedly');
         };
 
-document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').focus();
         document.querySelector('#chat-message-input').onkeyup =function(e) {
-if (e.keyCode === 13) {// enter, returndocument.querySelector('#chat-message-submit').click();
+            if (e.keyCode === 13) {
+                // enter, return
+                document.querySelector('#chat-message-submit').click();
             }
         };
 
-document.querySelector('#chat-message-submit').onclick =function(e) {
-const messageInputDom = document.querySelector('#chat-message-input');
-const message = 'uer: ' + messageInputDom.value;
+        document.querySelector('#chat-message-submit').onclick =function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = 'user: ' + messageInputDom.value;
             chatSocket.send(JSON.stringify({
                 'message': message
             }));
             messageInputDom.value = '';
+        };
+
+        document.querySelector('#roll-4').onclick =function(e) {
+            const number = Math.ceil(Math.random()*4)
+            chatSocket.send(JSON.stringify({
+                'message': number
+            }));
+        };
+
+        document.querySelector('#roll-6').onclick =function(e) {
+            const number = Math.ceil(Math.random()*6)
+            chatSocket.send(JSON.stringify({
+                'message': number
+            }));
+        };
+
+        document.querySelector('#roll-8').onclick =function(e) {
+            const number = Math.ceil(Math.random()*8)
+            chatSocket.send(JSON.stringify({
+                'message': number
+            }));
+        };
+
+        document.querySelector('#roll-10').onclick =function(e) {
+            const number = Math.ceil(Math.random()*10)
+            chatSocket.send(JSON.stringify({
+                'message': number
+            }));
+        };
+
+        document.querySelector('#roll-12').onclick =function(e) {
+            const number = Math.ceil(Math.random()*12)
+            chatSocket.send(JSON.stringify({
+                'message': number
+            }));
+        };
+
+        document.querySelector('#roll-20').onclick =function(e) {
+            const number = Math.ceil(Math.random()*20)
+            chatSocket.send(JSON.stringify({
+                'message': number
+            }));
+        };
+
+        document.querySelector('#roll-100').onclick =function(e) {
+            const number = Math.ceil(Math.random()*100)
+            chatSocket.send(JSON.stringify({
+                'message': number
+            }));
         };
     </script>
 </body>
