@@ -57,6 +57,7 @@ def signup_view(request):
 @login_required
 def profile(request, username):
     user = User.objects.get(username=username)
+    print(user)
     characters = (Character.objects.filter(user=user))
     return render(request, 'main_app/profile.html', {'username': username, 'characters': characters})
 
@@ -141,12 +142,17 @@ def weapon_show(request, weapon_id):
     # weapons = Weapons.objects.all()
     return render(request, 'weapon/show.html', {'weapon': weapon})
 
+@login_required
+def room_search(request, username):
+    user = User.objects.get(username=username)
+    characters = (Character.objects.filter(user=user))
+    return render(request, 'main_app/room_search.html', {'username': username, 'characters': characters})
 
-def room_search(request):
-    return render(request, 'main_app/room_search.html')
-
-def room_show(request, room_name):
-    return render(request, 'room/show.html', {'room_name': room_name})
+@login_required
+def room_show(request, room_name, username, character_id):
+    character = (Character.objects.get(id=character_id))
+    weapons = Weapons.objects.filter(character = character)
+    return render(request, 'room/show.html', {'room_name': room_name, 'username': username, 'character': character, 'weapons': weapons})
 
 def alarm(req):
     layer = get_channel_layer()

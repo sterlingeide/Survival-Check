@@ -7,11 +7,24 @@
     <title>Chat Rooms</title>
 </head>
 <body>
-    What chat room would you like to enter?<br>
+    What chat room would you like to enter {{username}}?<br>
+    <select name = "name" id ="username" >
+        <option value ={{username}}>{{username}}</option>
+    </select>
     <input id="room-name-input" type="text" size="100"><br>
+
+    <select name="character" id="character" required>
+        {%for character in characters%}
+            <option value={{character.id}}>{{character.name}}</option>
+        {% endfor %} 
+    </select><br>
+
     <input id="room-name-submit" type="button" value="Enter">
 
+
+
     <script>
+
         document.querySelector('#room-name-input').focus();
         document.querySelector('#room-name-input').onkeyup =function(e) {
             if (e.keyCode === 13) {// enter, return
@@ -21,7 +34,10 @@
 
         document.querySelector('#room-name-submit').onclick =function(e) {
             var roomName = document.querySelector('#room-name-input').value;
-            window.location.pathname = '/room/' + roomName + '/' ;
+            var character = document.querySelector('#character').value;
+            var name = document.querySelector('#username').value;
+            
+            window.location.pathname = '/room/' + roomName + '/' + name + '/' + character + '/' ;
         };
     </script>
 </body>

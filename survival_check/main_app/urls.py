@@ -19,6 +19,6 @@ urlpatterns = [
     path('weapon/<int:pk>/update/', views.weapon_update.as_view(), name='weapon_update'),
     path('weapon/<int:pk>/delete/', views.weapon_delete.as_view(), name='weapon_delete'),
     # path('room/create/', views.room_create.as_view(), name='room_create'),
-    path('room/<str:room_name>/', views.room_show, name='room_show'),
-    path('room/search', views.room_search, name='room_search')
+    path('room/<str:room_name>/<username>/<int:character_id>/', views.room_show, name='room_show'),
+    path('room/search/<username>/', views.room_search, name='room_search')
 ]
