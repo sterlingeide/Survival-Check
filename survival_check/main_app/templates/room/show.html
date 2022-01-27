@@ -12,6 +12,7 @@
         {{username}}
         {{character.name}}
         {{ room_name|json_script:"room-name" }}
+        {{ character.name|json_script:"character-name" }}
 
     </h1>   
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
@@ -24,9 +25,7 @@
     <input id="roll-100" type="button" value="d100" >
     <br>
     {% for weapon in weapons %}
-        
-        <p>{{ weapon.name }}</p>
-               
+        <input id="roll-{{weapon.damage_dice}}" type="button" value = "{{weapon.name}}" >
     {% endfor %} 
     <br>
     <input id="chat-message-input" type="text" size="100"><br>
@@ -34,6 +33,7 @@
     <script>
         
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const characterName = JSON.parse(document.getElementById('character-name').textContent);
 
         const chatSocket =new WebSocket(
             'ws://'
@@ -62,59 +62,75 @@
 
         document.querySelector('#chat-message-submit').onclick =function(e) {
             const messageInputDom = document.querySelector('#chat-message-input');
-            const message = 'user: ' + messageInputDom.value;
+            const message = characterName + ': ' + messageInputDom.value;
             chatSocket.send(JSON.stringify({
                 'message': message
             }));
             messageInputDom.value = '';
         };
 
-        document.querySelector('#roll-4').onclick =function(e) {
+        let all4 = document.querySelectorAll('#roll-4')
+        for(let i = 0; i < all4.length; i++) {
+            all4[i].onclick =function(e) {
             const number = Math.ceil(Math.random()*4)
             chatSocket.send(JSON.stringify({
-                'message': number
+                'message': characterName + ': ' + number
             }));
         };
+        }
 
-        document.querySelector('#roll-6').onclick =function(e) {
-            const number = Math.ceil(Math.random()*6)
+        let all6 = document.querySelectorAll('#roll-6')
+        for(let i = 0; i < all6.length; i++) {
+            // const damBonus = JSON.parse(document.getElementById('damage-bonus-6').textContent);
+            all6[i].onclick =function(e) {
+            const number = Math.ceil(Math.random()*6) 
             chatSocket.send(JSON.stringify({
-                'message': number
+                'message': characterName + ': ' + number
             }));
         };
+        }
 
-        document.querySelector('#roll-8').onclick =function(e) {
+        let all8 = document.querySelectorAll('#roll-8')
+        for(let i = 0; i < all8.length; i++) {
+            all8[i].onclick =function(e) {
             const number = Math.ceil(Math.random()*8)
             chatSocket.send(JSON.stringify({
-                'message': number
+                'message': characterName + ': ' + number
             }));
         };
+        }
 
-        document.querySelector('#roll-10').onclick =function(e) {
+        let all10 = document.querySelectorAll('#roll-10')
+        for(let i = 0; i < all10.length; i++) {
+            all10[i].onclick =function(e) {
             const number = Math.ceil(Math.random()*10)
             chatSocket.send(JSON.stringify({
-                'message': number
+                'message': characterName + ': ' + number
             }));
         };
+        }
 
-        document.querySelector('#roll-12').onclick =function(e) {
+        let all12 = document.querySelectorAll('#roll-12')
+        for(let i = 0; i < all12.length; i++) {
+            all12[i].onclick =function(e) {
             const number = Math.ceil(Math.random()*12)
             chatSocket.send(JSON.stringify({
-                'message': number
+                'message': characterName + ': ' + number
             }));
         };
+        }
 
         document.querySelector('#roll-20').onclick =function(e) {
             const number = Math.ceil(Math.random()*20)
             chatSocket.send(JSON.stringify({
-                'message': number
+                'message': characterName + ': ' + number
             }));
         };
 
         document.querySelector('#roll-100').onclick =function(e) {
             const number = Math.ceil(Math.random()*100)
             chatSocket.send(JSON.stringify({
-                'message': number
+                'message': characterName + ': ' + number
             }));
         };
     </script>
