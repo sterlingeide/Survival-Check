@@ -16,17 +16,25 @@
 
     </h1>   
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-    <input id="roll-4" type="button" value="d4" >
-    <input id="roll-6" type="button" value="d6" >
-    <input id="roll-8" type="button" value="d8" >
-    <input id="roll-10" type="button" value="d10" >
-    <input id="roll-12" type="button" value="d12" >
-    <input id="roll-20" type="button" value="d20" >
-    <input id="roll-100" type="button" value="d100" >
+    <input id="roll-d4" type="button" value="d4" >
+    <input id="roll-d6" type="button" value="d6" >
+    <input id="roll-d8" type="button" value="d8" >
+    <input id="roll-d10" type="button" value="d10" >
+    <input id="roll-d12" type="button" value="d12" >
+    <input id="roll-d20" type="button" value="d20" >
+    <input id="roll-d100" type="button" value="d100" >
     <br>
     {% for weapon in weapons %}
         <input id="roll-{{weapon.damage_dice}}" type="button" value = "{{weapon.name}}" >
+        {{ weapon.id|json_script:weapon.damage_dice }}
     {% endfor %} 
+    <br>
+    <input id="strength" type="button" value = "Strength Saving Throw" >
+    <input id="dexterity" type="button" value = "Dexterity Saving Throw" >
+    <input id="constitution" type="button" value = "Constitution Saving Throw" >
+    <input id="wisdom" type="button" value = "Wisdom Saving Throw" >
+    <input id="intelligence" type="button" value = "Intelligence Saving Throw" >
+    <input id="charisma" type="button" value = "Charisma Saving Throw" >
     <br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
@@ -71,66 +79,195 @@
 
         let all4 = document.querySelectorAll('#roll-4')
         for(let i = 0; i < all4.length; i++) {
+            const weapon = JSON.parse(document.getElementById('4').textContent);
             all4[i].onclick =function(e) {
-            const number = Math.ceil(Math.random()*4)
-            chatSocket.send(JSON.stringify({
-                'message': characterName + ': ' + number
-            }));
+            const damage = Math.ceil(Math.random()*4)
+            const hit = Math.ceil(Math.random()*20)
+                chatSocket.send(JSON.stringify({
+                    'message': characterName + ': ',
+                    'weapon' : weapon,
+                    'damage' : damage,
+                    'hit' : hit
+                }));
         };
         }
 
         let all6 = document.querySelectorAll('#roll-6')
         for(let i = 0; i < all6.length; i++) {
-            // const damBonus = JSON.parse(document.getElementById('damage-bonus-6').textContent);
+            const weapon = JSON.parse(document.getElementById('6').textContent);
             all6[i].onclick =function(e) {
-            const number = Math.ceil(Math.random()*6) 
-            chatSocket.send(JSON.stringify({
-                'message': characterName + ': ' + number
-            }));
-        };
+                const damage = Math.ceil(Math.random()*6)
+                const hit = Math.ceil(Math.random()*20)
+                chatSocket.send(JSON.stringify({
+                    'message': characterName + ': ',
+                    'weapon' : weapon,
+                    'damage' : damage,
+                    'hit' : hit
+                }));
+            };
         }
 
         let all8 = document.querySelectorAll('#roll-8')
         for(let i = 0; i < all8.length; i++) {
+            const weapon = JSON.parse(document.getElementById('8').textContent);
             all8[i].onclick =function(e) {
-            const number = Math.ceil(Math.random()*8)
-            chatSocket.send(JSON.stringify({
-                'message': characterName + ': ' + number
-            }));
+            const damage = Math.ceil(Math.random()*8)
+            const hit = Math.ceil(Math.random()*20)
+                chatSocket.send(JSON.stringify({
+                    'message': characterName + ': ',
+                    'weapon' : weapon,
+                    'damage' : damage,
+                    'hit' : hit
+                }));
         };
         }
 
         let all10 = document.querySelectorAll('#roll-10')
         for(let i = 0; i < all10.length; i++) {
+            const weapon = JSON.parse(document.getElementById('10').textContent);
             all10[i].onclick =function(e) {
-            const number = Math.ceil(Math.random()*10)
-            chatSocket.send(JSON.stringify({
-                'message': characterName + ': ' + number
-            }));
+            const damage = Math.ceil(Math.random()*10)
+            const hit = Math.ceil(Math.random()*20)
+                chatSocket.send(JSON.stringify({
+                    'message': characterName + ': ',
+                    'weapon' : weapon,
+                    'damage' : damage,
+                    'hit' : hit
+                }));
         };
         }
 
         let all12 = document.querySelectorAll('#roll-12')
         for(let i = 0; i < all12.length; i++) {
+            const weapon = JSON.parse(document.getElementById('12').textContent);
             all12[i].onclick =function(e) {
-            const number = Math.ceil(Math.random()*12)
-            chatSocket.send(JSON.stringify({
-                'message': characterName + ': ' + number
-            }));
+            const damage = Math.ceil(Math.random()*12)
+            const hit = Math.ceil(Math.random()*20)
+                chatSocket.send(JSON.stringify({
+                    'message': characterName + ': ',
+                    'weapon' : weapon,
+                    'damage' : damage,
+                    'hit' : hit
+                }));
         };
         }
 
-        document.querySelector('#roll-20').onclick =function(e) {
-            const number = Math.ceil(Math.random()*20)
+        document.querySelector('#roll-d4').onclick =function(e) {
+            const number = Math.ceil(Math.random()*4)
             chatSocket.send(JSON.stringify({
-                'message': characterName + ': ' + number
+                'message': characterName + ': ' + number,
+                'weapon' : false
             }));
         };
 
-        document.querySelector('#roll-100').onclick =function(e) {
+        document.querySelector('#roll-d6').onclick =function(e) {
+            const number = Math.ceil(Math.random()*6)
+            chatSocket.send(JSON.stringify({
+                'message': characterName + ': ' + number,
+                'weapon' : false
+            }));
+        };
+
+        document.querySelector('#roll-d8').onclick =function(e) {
+            const number = Math.ceil(Math.random()*8)
+            chatSocket.send(JSON.stringify({
+                'message': characterName + ': ' + number,
+                'weapon' : false
+            }));
+        };
+
+        document.querySelector('#roll-d10').onclick =function(e) {
+            const number = Math.ceil(Math.random()*10)
+            chatSocket.send(JSON.stringify({
+                'message': characterName + ': ' + number,
+                'weapon' : false
+            }));
+        };
+
+        document.querySelector('#roll-d12').onclick =function(e) {
+            const number = Math.ceil(Math.random()*12)
+            chatSocket.send(JSON.stringify({
+                'message': characterName + ': ' + number,
+                'weapon' : false
+            }));
+        };
+
+        
+
+
+        document.querySelector('#roll-d20').onclick =function(e) {
+            const number = Math.ceil(Math.random()*20)
+            chatSocket.send(JSON.stringify({
+                'message': characterName + ': ' + number,
+                'weapon' : false
+            }));
+        };
+
+        document.querySelector('#roll-d100').onclick =function(e) {
             const number = Math.ceil(Math.random()*100)
             chatSocket.send(JSON.stringify({
-                'message': characterName + ': ' + number
+                'message': characterName + ': ' + number,
+                'weapon' : false
+            }));
+        };
+
+        document.querySelector('#strength').onclick =function(e) {
+            const number = Math.ceil(Math.random()*20)
+            chatSocket.send(JSON.stringify({
+                'message': characterName,
+                'weapon' : false,
+                'roll' : number,
+                'save' : 'strength'
+            }));
+        };
+
+        document.querySelector('#dexterity').onclick =function(e) {
+            const number = Math.ceil(Math.random()*20)
+            chatSocket.send(JSON.stringify({
+                'message': characterName,
+                'weapon' : false,
+                'roll' : number,
+                'save' : 'dexterity'
+            }));
+        };
+
+        document.querySelector('#constitution').onclick =function(e) {
+            const number = Math.ceil(Math.random()*20)
+            chatSocket.send(JSON.stringify({
+                'message': characterName,
+                'weapon' : false,
+                'roll' : number,
+                'save' : 'constitution'
+            }));
+        };
+
+        document.querySelector('#wisdom').onclick =function(e) {
+            const number = Math.ceil(Math.random()*20)
+            chatSocket.send(JSON.stringify({
+                'message': characterName,
+                'weapon' : false,
+                'roll' : number,
+                'save' : 'wisdom'
+            }));
+        };
+
+        document.querySelector('#intelligence').onclick =function(e) {
+            const number = Math.ceil(Math.random()*20)
+            chatSocket.send(JSON.stringify({
+                'message': characterName,
+                'weapon' : false,
+                'roll' : number,
+                'save' : 'intelligence'
+            }));
+        };
+
+        document.querySelector('#charisma').onclick =function(e) {
+            const number = Math.ceil(Math.random()*20)
+            chatSocket.send(JSON.stringify({
+                'message': characterName,
+                'weapon' : false,
+                'roll' : number,
+                'save' : 'charisma'
             }));
         };
     </script>

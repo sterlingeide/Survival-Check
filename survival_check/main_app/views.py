@@ -139,7 +139,6 @@ def weapon_index(request):
 
 def weapon_show(request, weapon_id):
     weapon = Weapons.objects.get(id=weapon_id)
-    # weapons = Weapons.objects.all()
     return render(request, 'weapon/show.html', {'weapon': weapon})
 
 @login_required
