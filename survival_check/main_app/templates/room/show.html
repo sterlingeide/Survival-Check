@@ -13,9 +13,14 @@
         {{character.name}}
         {{ room_name|json_script:"room-name" }}
         {{ character.name|json_script:"character-name" }}
+        {{ character.hit_points|json_script:"character-hp" }}
 
-    </h1>   
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+    </h1>
+    <textarea id="character-log" cols="100" rows="10" readonly></textarea><br> 
+    <input id="character-message-input" type="number" size="100">
+    <input id="character-message-submit" type="button" value="Send">  
+    <br>
+    <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br>
     <input id="roll-d4" type="button" value="d4" >
     <input id="roll-d6" type="button" value="d6" >
     <input id="roll-d8" type="button" value="d8" >
@@ -24,6 +29,7 @@
     <input id="roll-d20" type="button" value="d20" >
     <input id="roll-d100" type="button" value="d100" >
     <br>
+    <input id="spell-attack" type="button" value = "Spell Attack"  >
     {% for weapon in weapons %}
         <input id="roll-{{weapon.damage_dice}}" type="button" value = "{{weapon.name}}" >
         {{ weapon.id|json_script:weapon.damage_dice }}
@@ -42,6 +48,11 @@
         
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const characterName = JSON.parse(document.getElementById('character-name').textContent);
+        const characterHealth = JSON.parse(document.getElementById('character-hp').textContent);
+         
+        const scroll =function(e) {
+            document.getElementById("chat-log").scrollTop = document.getElementById("chat-log").scrollHeight
+        }
 
         const chatSocket =new WebSocket(
             'ws://'
@@ -51,10 +62,34 @@
             + '/'
         );
 
+        chatSocket.onopen =function(e) {
+            chatSocket.send(JSON.stringify({
+                'message': characterName + ' joined the room',
+                'weapon': false,
+                'save' : false,
+                'spell': false,
+                'top-location': false
+            }));
+            chatSocket.send(JSON.stringify({
+                'message': characterName + ': ' + characterHealth + '/' + characterHealth,
+                'weapon': false,
+                'save' : false,
+                'spell': false,
+                'top-location': true
+            }));
+        }
+
+        
+
         chatSocket.onmessage =function(e) {
             const data = JSON.parse(e.data);
-                document.querySelector('#chat-log').value += (data.message + '\n');
-            };
+            if(data.message[1] == false){
+                document.querySelector('#chat-log').value += (data.message[0] + '\n');
+            }
+            else if(data.message[1] == true){
+                document.querySelector('#character-log').value += (data.message[0] + '\n');
+            }
+        };
 
         chatSocket.onclose =function(e) {
             console.error('Chat socket closed unexpectedly');
@@ -68,11 +103,39 @@
             }
         };
 
+        document.querySelector('#character-message-input').focus();
+        document.querySelector('#character-message-input').onkeyup =function(e) {
+            if (e.keyCode === 13) {
+                // enter, return
+                document.querySelector('#character-message-submit').click();
+            }
+        };
+
+        document.querySelector('#character-message-submit').onclick =function(e) {
+            scroll()
+            const messageInputDom = document.querySelector('#character-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': characterName + ': ' + String(message) + '/' + characterHealth,
+                'weapon': false,
+                'save' : false,
+                'spell': false,
+                'top-location': true
+
+            }));
+            messageInputDom.value = '';
+        };
+
         document.querySelector('#chat-message-submit').onclick =function(e) {
+            scroll()
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = characterName + ': ' + messageInputDom.value;
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': message,
+                'weapon': false,
+                'save' : false,
+                'spell': false,
+                'top-location': false
             }));
             messageInputDom.value = '';
         };
@@ -81,13 +144,17 @@
         for(let i = 0; i < all4.length; i++) {
             const weapon = JSON.parse(document.getElementById('4').textContent);
             all4[i].onclick =function(e) {
+            scroll()
             const damage = Math.ceil(Math.random()*4)
             const hit = Math.ceil(Math.random()*20)
                 chatSocket.send(JSON.stringify({
                     'message': characterName + ': ',
                     'weapon' : weapon,
                     'damage' : damage,
-                    'hit' : hit
+                    'hit' : hit,
+                    'save' : false,
+                    'spell': false,
+                    'top-location': false
                 }));
         };
         }
@@ -96,13 +163,17 @@
         for(let i = 0; i < all6.length; i++) {
             const weapon = JSON.parse(document.getElementById('6').textContent);
             all6[i].onclick =function(e) {
+            scroll()
                 const damage = Math.ceil(Math.random()*6)
                 const hit = Math.ceil(Math.random()*20)
                 chatSocket.send(JSON.stringify({
                     'message': characterName + ': ',
                     'weapon' : weapon,
                     'damage' : damage,
-                    'hit' : hit
+                    'hit' : hit,
+                    'save' : false,
+                    'spell': false,
+                    'top-location': false
                 }));
             };
         }
@@ -111,13 +182,17 @@
         for(let i = 0; i < all8.length; i++) {
             const weapon = JSON.parse(document.getElementById('8').textContent);
             all8[i].onclick =function(e) {
+            scroll()
             const damage = Math.ceil(Math.random()*8)
             const hit = Math.ceil(Math.random()*20)
                 chatSocket.send(JSON.stringify({
                     'message': characterName + ': ',
                     'weapon' : weapon,
                     'damage' : damage,
-                    'hit' : hit
+                    'hit' : hit,
+                    'save' : false,
+                    'spell': false ,
+                    'top-location': false
                 }));
         };
         }
@@ -126,13 +201,17 @@
         for(let i = 0; i < all10.length; i++) {
             const weapon = JSON.parse(document.getElementById('10').textContent);
             all10[i].onclick =function(e) {
+            scroll()
             const damage = Math.ceil(Math.random()*10)
             const hit = Math.ceil(Math.random()*20)
                 chatSocket.send(JSON.stringify({
                     'message': characterName + ': ',
                     'weapon' : weapon,
                     'damage' : damage,
-                    'hit' : hit
+                    'hit' : hit,
+                    'save' : false,
+                    'spell': false,
+                    'top-location': false
                 }));
         };
         }
@@ -141,54 +220,78 @@
         for(let i = 0; i < all12.length; i++) {
             const weapon = JSON.parse(document.getElementById('12').textContent);
             all12[i].onclick =function(e) {
+            scroll()
             const damage = Math.ceil(Math.random()*12)
             const hit = Math.ceil(Math.random()*20)
                 chatSocket.send(JSON.stringify({
                     'message': characterName + ': ',
                     'weapon' : weapon,
                     'damage' : damage,
-                    'hit' : hit
+                    'hit' : hit,
+                    'spell': false,
+                    'save' : false,
+                    'top-location': false
                 }));
         };
         }
 
         document.querySelector('#roll-d4').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*4)
             chatSocket.send(JSON.stringify({
                 'message': characterName + ': ' + number,
-                'weapon' : false
+                'weapon' : false,
+                'save' : false,
+                'spell': false,
+                'top-location': false
             }));
         };
 
         document.querySelector('#roll-d6').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*6)
             chatSocket.send(JSON.stringify({
                 'message': characterName + ': ' + number,
-                'weapon' : false
+                'weapon' : false,
+                'save' : false,
+                'spell': false,
+                'top-location': false
             }));
         };
 
         document.querySelector('#roll-d8').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*8)
             chatSocket.send(JSON.stringify({
                 'message': characterName + ': ' + number,
-                'weapon' : false
+                'weapon' : false,
+                'save' : false,
+                'spell': false,
+                'top-location': false
             }));
         };
 
         document.querySelector('#roll-d10').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*10)
             chatSocket.send(JSON.stringify({
                 'message': characterName + ': ' + number,
-                'weapon' : false
+                'weapon' : false,
+                'save' : false,
+                'spell': false,
+                'top-location': false
             }));
         };
 
         document.querySelector('#roll-d12').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*12)
             chatSocket.send(JSON.stringify({
                 'message': characterName + ': ' + number,
-                'weapon' : false
+                'weapon' : false,
+                'save' : false,
+                'spell': false,
+                'top-location': false
             }));
         };
 
@@ -196,78 +299,117 @@
 
 
         document.querySelector('#roll-d20').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*20)
             chatSocket.send(JSON.stringify({
                 'message': characterName + ': ' + number,
-                'weapon' : false
+                'weapon' : false,
+                'save' : false,
+                'spell': false,
+                'top-location': false
             }));
         };
 
         document.querySelector('#roll-d100').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*100)
             chatSocket.send(JSON.stringify({
                 'message': characterName + ': ' + number,
-                'weapon' : false
+                'weapon' : false,
+                'save' : false,
+                'spell': false,
+                'top-location': false
             }));
         };
 
         document.querySelector('#strength').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*20)
             chatSocket.send(JSON.stringify({
                 'message': characterName,
                 'weapon' : false,
                 'roll' : number,
-                'save' : 'strength'
+                'save' : 'strength',
+                'spell': false,
+                'top-location': false
             }));
         };
 
         document.querySelector('#dexterity').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*20)
             chatSocket.send(JSON.stringify({
                 'message': characterName,
                 'weapon' : false,
                 'roll' : number,
-                'save' : 'dexterity'
+                'save' : 'dexterity',
+                'spell': false,
+                'top-location': false
             }));
         };
 
         document.querySelector('#constitution').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*20)
             chatSocket.send(JSON.stringify({
                 'message': characterName,
                 'weapon' : false,
                 'roll' : number,
-                'save' : 'constitution'
+                'save' : 'constitution',
+                'spell': false,
+                'top-location': false
             }));
         };
 
         document.querySelector('#wisdom').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*20)
             chatSocket.send(JSON.stringify({
                 'message': characterName,
                 'weapon' : false,
                 'roll' : number,
-                'save' : 'wisdom'
+                'save' : 'wisdom',
+                'spell': false,
+                'top-location': false
             }));
         };
 
         document.querySelector('#intelligence').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*20)
             chatSocket.send(JSON.stringify({
                 'message': characterName,
                 'weapon' : false,
                 'roll' : number,
-                'save' : 'intelligence'
+                'save' : 'intelligence',
+                'spell': false,
+                'top-location': false
             }));
         };
 
         document.querySelector('#charisma').onclick =function(e) {
+            scroll()
             const number = Math.ceil(Math.random()*20)
             chatSocket.send(JSON.stringify({
                 'message': characterName,
                 'weapon' : false,
                 'roll' : number,
-                'save' : 'charisma'
+                'save' : 'charisma',
+                'spell': false,
+                'top-location': false
+            }));
+        };
+
+        document.querySelector('#spell-attack').onclick =function(e) {
+            scroll()
+            const number = Math.ceil(Math.random()*20)
+            chatSocket.send(JSON.stringify({
+                'message': characterName,
+                'weapon' : false,
+                'roll' : number,
+                'save' : false,
+                'spell': true,
+                'top-location': false
             }));
         };
     </script>

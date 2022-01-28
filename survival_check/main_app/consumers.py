@@ -23,6 +23,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        
+        print(text_data_json['top-location'])
+        location = text_data_json['top-location']
         if text_data_json['weapon']:
             @sync_to_async
             def get_weapon(weapon):
@@ -54,11 +57,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
             print(save_bonus)
             tot_roll = text_data_json['roll'] + save_bonus
             message = message + ': ' + str(tot_roll) + ' ' + text_data_json['save'] + ' saving throw'
+
+        if text_data_json['spell']:
+            @sync_to_async
+            def get_save(name):
+                return Character.objects.get(name = name)
+            character = await get_save(message)
+            spell_bonus = character.spell_attack_bonus
+            tot_roll = text_data_json['roll'] + spell_bonus
+            message = message + ': ' + str(tot_roll) + ' to hit'
+
+        print(message)
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': [message, location]
             }
         )
 
