@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "sequelize-cli": "^6.4.1"
+  },
+  "scripts": {
+    "start": "python3 manage.py runserver"
+  }
+}

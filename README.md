@@ -10,7 +10,7 @@ Survival Check is an app created to help track your D&D combats online. Using Dj
     * run python3 manage.py runserver
 
 ## `User Stories`
-- Many sers can join the same game together 
+- Many Users can join the same game together 
 - The users can see each others rolls 
 - All rolls automatically have their character's bonuses applied 
 - User can post live comments 
