@@ -1,6 +1,5 @@
 # Survival Check
 Survival Check is an app created to help track your D&D combats online. Using Django it allows players to create multiple characters and their individual weapons and then hop into a game room with their dungeon master. Once in a game room everyone can see eachothers health, attacks, messages, and more. 
-![Example Screenshot]()
 
 ## `Give it a Try`
 * <a href="https://survival-check.herokuapp.com/">The live site is currently undeer maintanence</a>
