@@ -57,7 +57,6 @@ def signup_view(request):
 @login_required
 def profile(request, username):
     user = User.objects.get(username=username)
-    print(user)
     characters = (Character.objects.filter(user=user))
     return render(request, 'main_app/profile.html', {'username': username, 'characters': characters})
 

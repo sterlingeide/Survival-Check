@@ -1,6 +1,51 @@
 html {
-    background-color: darkgray;
+    background-image: linear-gradient(rgb(173, 173, 173), rgb(46, 44, 44));
     text-align: center;
     color: white;
 }
 
+#header {
+    background-image: linear-gradient(to right, darkblue , lightblue);
+    color: white;
+    padding: 30px;
+    text-align: right;
+}
+
+#tab {
+    padding: 10px;
+    border-left-style: solid;
+    border-color: darkblue;
+    border-width: 3px;
+    margin-left: 20px;
+}
+
+#name {
+    padding: 10px;
+    border-left-style: solid;
+    border-color: darkblue;
+    border-width: 3px;
+    margin-left: 20px;
+    text-align: left;
+}
+
+#pic {
+    text-align: left;
+}
+
+#textbox {
+    padding: 5px;
+    border-style: solid;
+    border-color: darkblue;
+    border-width: 3px;
+}
+
+#form {
+    margin: 0 auto;
+}
+
+/* #character-log {
+    padding: 5px;
+    border-style: solid;
+    border-color: darkblue;
+    border-width: 3px;
+} */

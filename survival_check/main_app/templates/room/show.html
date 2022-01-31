@@ -8,8 +8,8 @@
     <title>Chat Room</title>
 </head>
 <body>
-    <h1>Room:
-        {{room_name}}
+    <h1><u>Room:
+        {{room_name}}</u>
         {{ room_name|json_script:"room-name" }}
         {{ character.name|json_script:"character-name" }}
         {{ character.hit_points|json_script:"character-hp" }}
@@ -18,11 +18,13 @@
         Playing as {{character.name}}
     </h2>
     <h3>Health Log</h3>
+    <br>
     <textarea id="character-log" cols="50" rows="8" readonly></textarea><br> 
     <br>
     <input id="character-message-input" type="number" size="100" placeholder="Enter new health total">
     <input id="character-message-submit" type="button" value="Send">  
     <br>
+    
     <br>
     <h3>Game Log</h3>
     <textarea id="chat-log" cols="80" rows="15" readonly></textarea><br>

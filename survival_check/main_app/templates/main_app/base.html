@@ -9,30 +9,34 @@
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
-    <header>
+    <header id="header">
+        <!-- <img src="./img/d20.png" alt="D20" id="pic"> -->
+        
         {% if user.is_authenticated %}
             <span>
-                <a href="{% url 'profile' user.username %}">Hello {{user.username}}</a>
+                <a id="name">Survival Check</a>
             </span>
-            <span>|</span>
             <span>
-                <a href="{% url 'logout' %}">Logout</a>
+                <a href="{% url 'profile' user.username %}" id="tab">Hello {{user.username}}</a>
             </span>
+            <span>
+                <a href="{% url 'logout' %} " id="tab">Logout</a>
+            </span>
+            
         {% else %}
             <span>
-                <a href="{% url 'login' %}">Login</a>
+                <a id="name">Survival Check</a>
             </span>
-            <span>|</span>
             <span>
-                <a href="{% url 'signup' %}">SignUp</a>
+                <a href="{% url 'login' %}" id="tab">Login</a>
+            </span>
+            <span>
+                <a href="{% url 'signup' %}" id="tab">SignUp</a>
             </span>
         {% endif %}
     </header>
     {% block content %}
     {% endblock %}
 
-    <footer>
-        All Rights Reserved, Survival Check 2021
-    </footer>
 </body>
 </html>

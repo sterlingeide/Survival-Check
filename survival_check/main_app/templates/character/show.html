@@ -2,8 +2,21 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'main_app/style.css' %}">
 {% block content %}
+    <a href="{% url 'character_update' character.id %}">Update Details</a>
+    <a href="{% url 'character_delete' character.id %}">DELETE This Character</a>
+    <br>
     <h2>Name: {{character.name}}</h2>
-    <p>Class: {{character.character_class}}</p>
+    <h3>Weapons:</h3>
+    {% for weapon in weapons %}
+        <a href="/weapon/{{weapon.id}}">
+            <b>{{ weapon.name }}</b>
+            <br>
+        </a>        
+    {% endfor %} 
+    <a href="/weapon/create">
+        <p><b>Add Weapon</p></b>
+    </a> 
+    <p >Class: {{character.character_class}}</p>
     <p>Race: {{character.race}}</p>
     <p>HP: {{character.hit_points}}</p>
     <p>Spell Attack Bonus: {{character.spell_attack_bonus}}</p>
@@ -14,18 +27,9 @@
     <p>Intelligence Saving Throw:{{character.intelligence_saving_throw}}</p>
     <p>Wisdom Saving Throw:{{character.wisdom_saving_throw}}</p>
     <p>Charisma Saving Throw:{{character.charisma_saving_throw}}</p>
-    <h3>Weapons:</h3>
-    {% for weapon in weapons %}
-        <a href="/weapon/{{weapon.id}}">
-            <p>{{ weapon.name }}</p>
-        </a>        
-    {% endfor %} 
-    <a href="/weapon/create">
-        <p>Add Weapon</p>
-    </a>  
+     
 
-    <a href="{% url 'character_update' character.id %}">Update Details</a>
-    <a href="{% url 'character_delete' character.id %}">DELETE This Character</a>
+    
 
     <hr>
 
