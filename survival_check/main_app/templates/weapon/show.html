@@ -1,5 +1,6 @@
 {% extends 'main_app/base.html' %}
 {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'main_app/style.css' %}">
 {% block content %}
     <h2>Name: {{weapon.name}}</h2>
     <p>To Hit Bonus: {{weapon.to_hit_bonus}}</p>

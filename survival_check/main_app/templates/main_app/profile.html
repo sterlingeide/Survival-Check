@@ -1,5 +1,6 @@
 {% extends 'main_app/base.html' %}
-
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'main_app/style.css' %}">
 {% block content %}
     <h1>{{ user.username }}'s collection:</h1>
         {% for character in characters %}

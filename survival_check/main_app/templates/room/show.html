@@ -1,5 +1,6 @@
 {% extends 'main_app/base.html' %}
 {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'main_app/style.css' %}">
 {% block content %}
 <html>
 <head>
@@ -9,18 +10,22 @@
 <body>
     <h1>Room:
         {{room_name}}
-        {{username}}
-        {{character.name}}
         {{ room_name|json_script:"room-name" }}
         {{ character.name|json_script:"character-name" }}
         {{ character.hit_points|json_script:"character-hp" }}
-
     </h1>
-    <textarea id="character-log" cols="100" rows="10" readonly></textarea><br> 
-    <input id="character-message-input" type="number" size="100">
+    <h2>
+        Playing as {{character.name}}
+    </h2>
+    <h3>Health Log</h3>
+    <textarea id="character-log" cols="50" rows="8" readonly></textarea><br> 
+    <br>
+    <input id="character-message-input" type="number" size="100" placeholder="Enter new health total">
     <input id="character-message-submit" type="button" value="Send">  
     <br>
-    <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br>
+    <br>
+    <h3>Game Log</h3>
+    <textarea id="chat-log" cols="80" rows="15" readonly></textarea><br>
     <input id="roll-d4" type="button" value="d4" >
     <input id="roll-d6" type="button" value="d6" >
     <input id="roll-d8" type="button" value="d8" >
@@ -38,11 +43,12 @@
     <input id="strength" type="button" value = "Strength Saving Throw" >
     <input id="dexterity" type="button" value = "Dexterity Saving Throw" >
     <input id="constitution" type="button" value = "Constitution Saving Throw" >
+    <br>
     <input id="wisdom" type="button" value = "Wisdom Saving Throw" >
     <input id="intelligence" type="button" value = "Intelligence Saving Throw" >
     <input id="charisma" type="button" value = "Charisma Saving Throw" >
     <br>
-    <input id="chat-message-input" type="text" size="100"><br>
+    <input id="chat-message-input" type="text" size="80" placeholder="Chat box"><br>
     <input id="chat-message-submit" type="button" value="Send">
     <script>
         
