@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "sequelize": "^6.15.0",
-    "sequelize-cli": "^6.4.1"
-  },
-  "scripts": {
-    "start": "python3 survival_check/manage.py runserver"
-  }
-}
